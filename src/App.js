@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Container, Box, createMuiTheme } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/styles";
+import { ApolloProvider } from "@apollo/client";
 
-function App() {
+import client from "~/services/api";
+
+import { BrowserRouter } from "react-router-dom";
+
+import GlobalStyle from "~/assets/css/global.js";
+import Header from "~/components/Header";
+import Routes from "~/routes";
+
+const theme = createMuiTheme({});
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <ApolloProvider client={client}>
+        <ThemeProvider theme={theme}>
+          <Header />
+          <Container maxWidth="lg">
+            <Box mt={4}>
+              <GlobalStyle />
+              <Routes />
+            </Box>
+          </Container>
+        </ThemeProvider>
+      </ApolloProvider>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
