@@ -9,10 +9,39 @@ const useStyles = makeStyles(theme => ({
   headerCard: {
     cursor: "pointer"
   },
+  gridAll: {
+    position: "relative"
+  },
   gridMovies: {
-    overflow: "scroll",
+    "overflow-x": "hidden",
     whiteSpace: "nowrap",
     display: "block"
+  },
+  nextButton: {
+    right: "1%",
+    position: "absolute",
+    top: "50%",
+    zIndex: 9,
+    width: "60px",
+    height: "60px",
+    borderRadius: "50",
+    backgroundColor: "rgba(20, 20, 21, 0.9)",
+    "&:hover": {
+      backgroundColor: "rgba(20, 20, 21, 1) !important"
+    }
+  },
+  backButton: {
+    left: "1%",
+    position: "absolute",
+    top: "50%",
+    zIndex: 9,
+    width: "60px",
+    height: "60px",
+    borderRadius: "50",
+    backgroundColor: "rgba(20, 20, 21, 0.9)",
+    "&:hover": {
+      backgroundColor: "rgba(20, 20, 21, 1) !important"
+    }
   }
 }));
 
