@@ -1,11 +1,11 @@
 import React from "react";
-import { Container, Box, createMuiTheme } from "@material-ui/core";
+import { ToastContainer } from "react-toastify";
+import { BrowserRouter } from "react-router-dom";
+import { Box, createMuiTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import { ApolloProvider } from "@apollo/client";
 
 import client from "~/services/api";
-
-import { BrowserRouter } from "react-router-dom";
 
 import GlobalStyle from "~/assets/css/global.js";
 import Header from "~/components/Header";
@@ -19,12 +19,11 @@ const App = () => {
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           <Header />
-          <Container maxWidth="lg">
-            <Box mt={4}>
-              <GlobalStyle />
-              <Routes />
-            </Box>
-          </Container>
+          <Box>
+            <GlobalStyle />
+            <ToastContainer />
+            <Routes />
+          </Box>
         </ThemeProvider>
       </ApolloProvider>
     </BrowserRouter>
