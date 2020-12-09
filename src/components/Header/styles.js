@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
   title: {
+    cursor: "pointer",
     fontWeight: "bold",
     marginRight: theme.spacing(5)
   },
@@ -18,6 +19,34 @@ const useStyles = makeStyles(theme => ({
   },
   menu: {
     color: "#f0f0f0"
+  },
+
+  dropdown: {
+    position: "relative",
+    display: "inline-block",
+    "&:hover $dropdownContent": {
+      display: "block"
+    }
+  },
+
+  dropdownContent: {
+    display: "none",
+    position: "absolute",
+    backgroundColor: "#f1f1f1",
+    minWidth: "200px",
+    maxHeight: "300px",
+    overflowX: "auto",
+    boxShadow: "0px 8px 16px 0px rgba(0,0,0,0.2)",
+    zIndex: 1,
+    "& a": {
+      color: "black",
+      padding: "12px 16px",
+      textDecoration: "none",
+      display: "block"
+    },
+    "& a:hover": {
+      backgroundColor: "rgba(0,0,0,0.1)"
+    }
   }
 }));
 
