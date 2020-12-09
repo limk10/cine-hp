@@ -4,13 +4,19 @@ import { Grid, Typography, Box } from "@material-ui/core";
 
 import { useStyles } from "./styles";
 
+import { useHistory } from "react-router-dom";
+
 const MovieCard = ({ item }) => {
-  const { originalTitle, overview, posterPath, releaseDate } = item;
+  const history = useHistory();
+  const { id, originalTitle, overview, posterPath, releaseDate } = item;
 
   const classes = useStyles();
   return (
     <>
-      <div className={classes.movieCard}>
+      <div
+        onClick={() => history.push(`/filme/${id}`)}
+        className={classes.movieCard}
+      >
         <div
           style={{
             backgroundImage: `url(https://image.tmdb.org/t/p/original/${posterPath})`

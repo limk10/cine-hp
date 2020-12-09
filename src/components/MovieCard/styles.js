@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
       marginRight: 0
     },
     "&:hover": {
-      boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.8)",
+      // boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.8)",
       "& $headerContainer": {
         width: "100%",
         height: "100%",
