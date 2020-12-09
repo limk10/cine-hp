@@ -7,6 +7,9 @@ const reducers = (state = INITIAL_STATE, action) => {
     case actionsTypes.RELEASE_FILMS:
       return { ...state, releaseFilms: action.payload };
 
+    case actionsTypes.FILM_BY_ID:
+      return { ...state, filmByID: action.payload };
+
     default:
       return state;
   }

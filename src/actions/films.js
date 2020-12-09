@@ -6,5 +6,11 @@ export default {
       type: actionsTypes.RELEASE_FILMS,
       payload: value
     };
+  },
+  filmByID: value => {
+    return {
+      type: actionsTypes.FILM_BY_ID,
+      payload: value
+    };
   }
 };
