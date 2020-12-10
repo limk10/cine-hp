@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import {
   AppBar,
   Typography,
@@ -7,14 +9,40 @@ import {
   Box,
   Button
 } from "@material-ui/core";
-import { useStyles } from "./styles";
-import { useHistory } from "react-router-dom";
-
+import { gql, useLazyQuery } from "@apollo/client";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 
+import { useStyles } from "./styles";
+
+import actionsFilms from "~/actions/movies";
+
+const GET_MOVIE_BY_GENRE = gql`
+  query getByGenre($genre: String!) {
+    allMovies(withGenres: $genre) {
+      results {
+        id
+        originalTitle
+        releaseDate
+        overview
+        posterPath
+      }
+    }
+  }
+`;
+
 const Header = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
+
+  const [getMovieByGenre, { data, loading, error }] = useLazyQuery(
+    GET_MOVIE_BY_GENRE,
+    {
+      onCompleted: data => populateMovies()
+    }
+  );
+
+  const [genre, setGenre] = useState({});
 
   // Adicionado generos na mão, pois não existe
   // uma forma de pegar pela API disponibilizada
@@ -39,6 +67,32 @@ const Header = () => {
     { id: 27, name: "Terror" },
     { id: 53, name: "Trhiller" }
   ];
+
+  const handleMovieByGenre = async (e, genre, name) => {
+    e.preventDefault();
+    history.push("/filme");
+    await getMovieByGenre({
+      variables: {
+        genre: `${genre}`
+      }
+    });
+
+    setGenre({
+      id: genre,
+      name
+    });
+  };
+
+  const populateMovies = () => {
+    const { allMovies } = data;
+
+    dispatch(
+      actionsFilms.collectionMovies({
+        collectionMovies: allMovies?.results,
+        movieTitle: `${genre.name}`
+      })
+    );
+  };
 
   return (
     <>
@@ -69,9 +123,13 @@ const Header = () => {
                   Gêneros <ExpandMoreRoundedIcon style={{ color: "#f0f0f0" }} />
                 </Button>
                 <div className={classes.dropdownContent}>
-                  {genres?.map((item, key) => (
-                    <a key={key} href="#!">
-                      {item.name}
+                  {genres?.map(({ id, name }, key) => (
+                    <a
+                      onClick={e => handleMovieByGenre(e, id, name)}
+                      key={key}
+                      href="#"
+                    >
+                      {name}
                     </a>
                   ))}
                 </div>
