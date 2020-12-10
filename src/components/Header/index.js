@@ -117,7 +117,6 @@ const Header = () => {
               >
                 Início
               </Button>
-              <Button className={classes.menu}>Lançamentos</Button>
               <div className={classes.dropdown}>
                 <Button className={`${classes.menu} ${classes.dropbtn}`}>
                   Gêneros <ExpandMoreRoundedIcon style={{ color: "#f0f0f0" }} />
