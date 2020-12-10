@@ -5,21 +5,20 @@ import {
   Box,
   Grid,
   IconButton,
-  Container,
-  CircularProgress
+  Container
 } from "@material-ui/core";
 import { useQuery, gql } from "@apollo/client";
 
 import ArrowForwardIosOutlinedIcon from "@material-ui/icons/ArrowForwardIosOutlined";
 import ArrowBackIosOutlinedIcon from "@material-ui/icons/ArrowBackIosOutlined";
 
-import actionsFilms from "~/actions/films";
+import actionsFilms from "~/actions/movies";
 import MovieCard from "~/components/MovieCard";
 import Spinner from "~/components/Spinner";
 
 import { useStyles } from "./styles";
 
-const GET_RELEASE_FILMS = gql`
+const GET_RELEASE_MOVIES = gql`
   query getRelease {
     allMovies(page: 1, releaseDate_LTE: "2020-12-07") {
       results {
@@ -35,15 +34,15 @@ const GET_RELEASE_FILMS = gql`
 
 const Home = () => {
   const dispatch = useDispatch();
-  const releaseFilms = useSelector(state => state.reducerFilms.releaseFilms);
+  const releaseMovies = useSelector(state => state.reducerMovies.releaseMovies);
   const classes = useStyles();
 
-  const { loading, error, data } = useQuery(GET_RELEASE_FILMS);
+  const { loading, error, data } = useQuery(GET_RELEASE_MOVIES);
 
   useEffect(() => {
     if (loading) {
       dispatch(
-        actionsFilms.releaseFilms({
+        actionsFilms.releaseMovies({
           data: [],
           loading: loading
         })
@@ -55,7 +54,7 @@ const Home = () => {
       const { results } = allMovies;
 
       dispatch(
-        actionsFilms.releaseFilms({
+        actionsFilms.releaseMovies({
           data: results,
           loading: false
         })
@@ -63,20 +62,20 @@ const Home = () => {
     }
   }, [data]);
 
-  const nextReleaseFilms = () => {
-    const containerFilm = document.getElementById("content-release-films");
+  const nextreleaseMovies = () => {
+    const containerMovie = document.getElementById("content-release-movies");
 
-    containerFilm.scrollBy({
+    containerMovie.scrollBy({
       top: 0,
       left: +600,
       behavior: "smooth"
     });
   };
 
-  const backReleaseFilms = () => {
-    const containerFilm = document.getElementById("content-release-films");
+  const backreleaseMovies = () => {
+    const containerMovie = document.getElementById("content-release-movies");
 
-    containerFilm.scrollBy({
+    containerMovie.scrollBy({
       top: 0,
       left: -600,
       behavior: "smooth"
@@ -91,17 +90,16 @@ const Home = () => {
         </Typography>
         <ArrowForwardIosOutlinedIcon className={classes.iconArrow} />
       </Box>
-
       <Grid className={classes.gridAll} container>
-        {!!!releaseFilms?.data?.length && <Spinner />}
-        {!!releaseFilms?.data?.length && (
+        {!!!releaseMovies?.data?.length && <Spinner />}
+        {!!releaseMovies?.data?.length && (
           <Grid
-            id="content-release-films"
+            id="content-release-movies"
             className={classes.gridMovies}
             container
           >
             <IconButton
-              onClick={() => backReleaseFilms()}
+              onClick={() => backreleaseMovies()}
               aria-label="back"
               className={classes.backButton}
             >
@@ -110,12 +108,12 @@ const Home = () => {
                 fontSize="large"
               />
             </IconButton>
-            {releaseFilms?.data?.map((item, key) => (
+            {releaseMovies?.data?.map((item, key) => (
               <MovieCard item={item} key={key} />
             ))}
 
             <IconButton
-              onClick={() => nextReleaseFilms()}
+              onClick={() => nextreleaseMovies()}
               aria-label="next"
               className={classes.nextButton}
             >
