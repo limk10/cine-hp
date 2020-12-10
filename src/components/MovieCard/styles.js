@@ -12,11 +12,11 @@ const useStyles = makeStyles(theme => ({
     cursor: "pointer",
     marginRight: theme.spacing(0.8),
     marginLeft: theme.spacing(0.8),
-    "&:first-child": {
+    "&:last-child": {
       marginRight: theme.spacing(0.8),
       marginLeft: 0
     },
-    "&:last-child": {
+    "&:first-child": {
       marginLeft: theme.spacing(0.8),
       marginRight: 0
     },
