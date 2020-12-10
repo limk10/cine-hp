@@ -5,7 +5,7 @@ const useStyles = makeStyles(theme => ({
     background: "#ffffff",
     boxShadow: "0px 6px 18px rgba(0, 0, 0, 0.1)",
     width: "100%",
-    maxWidth: "300px",
+    maxWidth: "295px",
     marginTop: "1em",
     display: "inline-block",
     position: "relative",
