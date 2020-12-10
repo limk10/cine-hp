@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
   },
   imgPosterPath: {
     display: "inline",
+    height: "auto",
     width: "132px"
   },
   titleResume: {
