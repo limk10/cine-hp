@@ -3,13 +3,15 @@ import { Route, Switch, Redirect } from "react-router-dom";
 
 import Home from "~/screens/Home";
 import NotFound from "~/screens/NotFound";
-import FilmDetails from "~/screens/Films/Details";
+import movieDetails from "~/screens/Movies/Details";
+import ListDetails from "~/screens/Movies/List";
 
 const Routes = () => {
   return (
     <Switch>
       <Route exact path="/" component={Home} />
-      <Route exact path="/filme/:id" component={FilmDetails} />
+      <Route exact path="/filme" component={ListDetails} />
+      <Route exact path="/filme/:id" component={movieDetails} />
       <Route path="*" component={NotFound} />
     </Switch>
   );
