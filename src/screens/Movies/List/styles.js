@@ -9,8 +9,8 @@ const useStyles = makeStyles(theme => ({
   headerCard: {
     cursor: "pointer"
   },
-  gridAll: {
-    position: "relative"
+  gridMovieCard: {
+    textAlign: "center"
   }
 }));
 
