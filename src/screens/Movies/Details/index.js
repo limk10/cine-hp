@@ -167,52 +167,53 @@ const Details = props => {
               className={classes.bannerImage}
               src={`https://image.tmdb.org/t/p/original${movieByID?.backdropPath}`}
             />
+            <Container maxWidth="lg">
+              <Box className={classes.infoBanner}>
+                <Typography
+                  className={classes.filmName}
+                  variant="h2"
+                  gutterBottom
+                >
+                  {movieByID?.originalTitle}
+                </Typography>
+
+                <Box display="flex">
+                  <Rating
+                    name="customized-empty"
+                    defaultValue={2}
+                    value={movieByID?.voteAverage / 2}
+                    precision={0.5}
+                    disabled
+                    emptyIcon={
+                      <StarBorderIcon
+                        style={{ color: "#f0f0f0" }}
+                        fontSize="inherit"
+                      />
+                    }
+                  />
+                  <Typography variant="body1" gutterBottom>
+                    ({movieByID?.voteCount})
+                  </Typography>
+                </Box>
+
+                <IconButton
+                  onClick={() => handleTrailer()}
+                  style={{ color: "#f0f0f0" }}
+                  aria-label="view trailer"
+                >
+                  <MovieCreationOutlinedIcon fontSize="large" />
+                </IconButton>
+                <IconButton
+                  onClick={() => saveToFavorite()}
+                  style={{ color: "#f0f0f0" }}
+                  aria-label="add film to favorite"
+                >
+                  {iconHeart()}
+                </IconButton>
+              </Box>
+            </Container>
           </div>
           <Container maxWidth="lg">
-            <Box className={classes.infoBanner}>
-              <Typography
-                className={classes.filmName}
-                variant="h2"
-                gutterBottom
-              >
-                {movieByID?.originalTitle}
-              </Typography>
-
-              <Box display="flex">
-                <Rating
-                  name="customized-empty"
-                  defaultValue={2}
-                  value={movieByID?.voteAverage / 2}
-                  precision={0.5}
-                  disabled
-                  emptyIcon={
-                    <StarBorderIcon
-                      style={{ color: "#f0f0f0" }}
-                      fontSize="inherit"
-                    />
-                  }
-                />
-                <Typography variant="body1" gutterBottom>
-                  ({movieByID?.voteCount})
-                </Typography>
-              </Box>
-
-              <IconButton
-                onClick={() => handleTrailer()}
-                style={{ color: "#f0f0f0" }}
-                aria-label="view trailer"
-              >
-                <MovieCreationOutlinedIcon fontSize="large" />
-              </IconButton>
-              <IconButton
-                onClick={() => saveToFavorite()}
-                style={{ color: "#f0f0f0" }}
-                aria-label="add film to favorite"
-              >
-                {iconHeart()}
-              </IconButton>
-            </Box>
-
             <Box mb={10} mt={2}>
               <Typography variant="h5" gutterBottom>
                 Sinopse
@@ -229,7 +230,7 @@ const Details = props => {
 
                 <Box component="div" ml={2}>
                   <Grid container>
-                    <Grid item xs={2}>
+                    <Grid item xs={6} md={2}>
                       <Typography
                         className={classes.titleResume}
                         variant="subtitle2"
@@ -238,12 +239,12 @@ const Details = props => {
                         Titulo Original
                       </Typography>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6} md={4}>
                       <Typography variant="body2" gutterBottom>
                         {movieByID?.originalTitle}
                       </Typography>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={6} md={2}>
                       <Typography
                         className={classes.titleResume}
                         variant="subtitle2"
@@ -252,12 +253,12 @@ const Details = props => {
                         Ano de Produção
                       </Typography>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6} md={4}>
                       <Typography variant="body2" gutterBottom>
                         {movieByID?.releaseDate}
                       </Typography>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid item xs={6} md={2}>
                       <Typography
                         className={classes.titleResume}
                         variant="subtitle2"
@@ -266,13 +267,13 @@ const Details = props => {
                         Genêro(s)
                       </Typography>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6} md={4}>
                       <Typography variant="body2" gutterBottom>
                         {movieByID?.genres?.length &&
                           movieByID?.genres.map(item => `${item?.name}, `)}
                       </Typography>
                     </Grid>
-                    <Grid item xs={2}>
+                    <Grid xs={6} md={2}>
                       <Typography
                         className={classes.titleResume}
                         variant="subtitle2"
@@ -281,7 +282,7 @@ const Details = props => {
                         País
                       </Typography>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={6} md={4}>
                       <Typography variant="body2" gutterBottom>
                         {movieByID?.productionCountries?.length &&
                           movieByID?.productionCountries.map(

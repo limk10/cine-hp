@@ -17,10 +17,11 @@ const useStyles = makeStyles(theme => ({
   },
   infoBanner: {
     position: "absolute",
-    bottom: 0,
-    paddingBottom: "10rem"
+    bottom: "0px",
+    paddingBottom: "3rem"
   },
   filmName: {
+    fontSize: "3.8vw",
     fontWeight: 700,
     textShadow: "rgb(0, 0, 0) 0px 0px 10px"
   },
