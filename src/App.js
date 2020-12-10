@@ -19,7 +19,7 @@ const App = () => {
       <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           <Header />
-          <Box>
+          <Box mb={3}>
             <GlobalStyle />
             <ToastContainer />
             <Routes />
