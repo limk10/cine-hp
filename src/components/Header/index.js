@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
@@ -9,40 +9,16 @@ import {
   Box,
   Button
 } from "@material-ui/core";
-import { gql, useLazyQuery } from "@apollo/client";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
 
 import { useStyles } from "./styles";
 
 import actionsFilms from "~/actions/movies";
 
-const GET_MOVIE_BY_GENRE = gql`
-  query getByGenre($genre: String!) {
-    allMovies(withGenres: $genre) {
-      results {
-        id
-        originalTitle
-        releaseDate
-        overview
-        posterPath
-      }
-    }
-  }
-`;
-
 const Header = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const history = useHistory();
-
-  const [getMovieByGenre, { data, loading, error }] = useLazyQuery(
-    GET_MOVIE_BY_GENRE,
-    {
-      onCompleted: data => populateMovies()
-    }
-  );
-
-  const [genre, setGenre] = useState({});
 
   // Adicionado generos na mão, pois não existe
   // uma forma de pegar pela API disponibilizada
@@ -70,28 +46,20 @@ const Header = () => {
 
   const handleMovieByGenre = async (e, genre, name) => {
     e.preventDefault();
-    history.push("/filme");
-    await getMovieByGenre({
-      variables: {
-        genre: `${genre}`
-      }
-    });
-
-    setGenre({
-      id: genre,
-      name
-    });
-  };
-
-  const populateMovies = () => {
-    const { allMovies } = data;
 
     dispatch(
       actionsFilms.collectionMovies({
-        collectionMovies: allMovies?.results,
-        movieTitle: `${genre.name}`
+        collectionMovies: [],
+        idGenre: `${genre}`,
+        movieTitle: `${name}`
       })
     );
+
+    history.push("/filme", {
+      state: {
+        type: "listByGenries"
+      }
+    });
   };
 
   return (
