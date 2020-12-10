@@ -18,7 +18,7 @@ import FavoriteSharpIcon from "@material-ui/icons/FavoriteSharp";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import actionsFilms from "~/actions/films";
+import actionMovies from "~/actions/movies";
 
 import { useStyles } from "./styles";
 
@@ -68,8 +68,7 @@ const GET_MOVIE_BY_ID = gql`
 const Details = props => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const filmByID = useSelector(state => state.reducerFilms.filmByID);
-
+  const movieByID = useSelector(state => state.reducerMovies.movieByID);
   const { id } = props.match.params;
   const { data, loading, error } = useQuery(GET_MOVIE_BY_ID, {
     variables: {
@@ -80,16 +79,16 @@ const Details = props => {
   useEffect(() => {
     if (data) {
       const { movie } = data;
-      dispatch(actionsFilms.filmByID(movie));
+      dispatch(actionMovies.movieByID(movie));
     }
 
     return () => {
-      dispatch(actionsFilms.filmByID({}));
+      dispatch(actionMovies.movieByID({}));
     };
   }, [data]);
 
   const handleTrailer = () => {
-    const [video] = filmByID?.videos;
+    const [video] = movieByID?.videos;
     const { key } = video;
 
     var url = `https://www.youtube.com/watch?v=${key}`;
@@ -99,7 +98,7 @@ const Details = props => {
   const saveToFavorite = async () => {
     let stored = await getToFavorite();
 
-    if (stored.includes(filmByID?.id)) {
+    if (stored.includes(movieByID?.id)) {
       toast.info(
         `Opss... Esse filme já foi adicionado a sua lista de favoritos!`,
         {
@@ -117,12 +116,12 @@ const Details = props => {
       return;
     }
 
-    stored.push(filmByID?.id);
+    stored.push(movieByID?.id);
 
     localStorage["favorite_films"] = JSON.stringify(stored);
 
     toast.success(
-      `Sucesso... O filme ${filmByID?.originalTitle} foi adicionado aos seus favoritos!`,
+      `Sucesso... O filme ${movieByID?.originalTitle} foi adicionado aos seus favoritos!`,
       {
         position: "top-right",
         autoClose: 5000,
@@ -145,7 +144,7 @@ const Details = props => {
 
   const iconHeart = () => {
     let stored = getToFavorite();
-    const isIncluded = stored.includes(filmByID?.id);
+    const isIncluded = stored.includes(movieByID?.id);
 
     if (!isIncluded) {
       return <FavoriteBorderOutlinedIcon fontSize="large" />;
@@ -156,17 +155,17 @@ const Details = props => {
 
   return (
     <>
-      {_.isEmpty(filmByID) && (
+      {_.isEmpty(movieByID) && (
         <Grid container>
           <Spinner />
         </Grid>
       )}
-      {!_.isEmpty(filmByID) && (
+      {!_.isEmpty(movieByID) && (
         <Grid container>
           <div className={classes.mask}>
             <img
               className={classes.bannerImage}
-              src={`https://image.tmdb.org/t/p/original${filmByID?.backdropPath}`}
+              src={`https://image.tmdb.org/t/p/original${movieByID?.backdropPath}`}
             />
           </div>
           <Container maxWidth="lg">
@@ -176,14 +175,14 @@ const Details = props => {
                 variant="h2"
                 gutterBottom
               >
-                {filmByID?.originalTitle}
+                {movieByID?.originalTitle}
               </Typography>
 
               <Box display="flex">
                 <Rating
                   name="customized-empty"
                   defaultValue={2}
-                  value={filmByID?.voteAverage / 2}
+                  value={movieByID?.voteAverage / 2}
                   precision={0.5}
                   disabled
                   emptyIcon={
@@ -194,7 +193,7 @@ const Details = props => {
                   }
                 />
                 <Typography variant="body1" gutterBottom>
-                  ({filmByID?.voteCount})
+                  ({movieByID?.voteCount})
                 </Typography>
               </Box>
 
@@ -219,13 +218,13 @@ const Details = props => {
                 Sinopse
               </Typography>
               <Typography variant="body1" gutterBottom>
-                {filmByID?.overview}
+                {movieByID?.overview}
               </Typography>
 
               <Box display="flex" mt={3}>
                 <img
                   className={classes.imgPosterPath}
-                  src={`https://image.tmdb.org/t/p/original/${filmByID?.posterPath}`}
+                  src={`https://image.tmdb.org/t/p/original/${movieByID?.posterPath}`}
                 />
 
                 <Box component="div" ml={2}>
@@ -241,7 +240,7 @@ const Details = props => {
                     </Grid>
                     <Grid item xs={4}>
                       <Typography variant="body2" gutterBottom>
-                        {filmByID?.originalTitle}
+                        {movieByID?.originalTitle}
                       </Typography>
                     </Grid>
                     <Grid item xs={2}>
@@ -255,7 +254,7 @@ const Details = props => {
                     </Grid>
                     <Grid item xs={4}>
                       <Typography variant="body2" gutterBottom>
-                        {filmByID?.releaseDate}
+                        {movieByID?.releaseDate}
                       </Typography>
                     </Grid>
                     <Grid item xs={2}>
@@ -269,8 +268,8 @@ const Details = props => {
                     </Grid>
                     <Grid item xs={4}>
                       <Typography variant="body2" gutterBottom>
-                        {filmByID?.genres?.length &&
-                          filmByID?.genres.map(item => `${item?.name}, `)}
+                        {movieByID?.genres?.length &&
+                          movieByID?.genres.map(item => `${item?.name}, `)}
                       </Typography>
                     </Grid>
                     <Grid item xs={2}>
@@ -284,8 +283,8 @@ const Details = props => {
                     </Grid>
                     <Grid item xs={4}>
                       <Typography variant="body2" gutterBottom>
-                        {filmByID?.productionCountries?.length &&
-                          filmByID?.productionCountries.map(
+                        {movieByID?.productionCountries?.length &&
+                          movieByID?.productionCountries.map(
                             item => `${item?.name}, `
                           )}
                       </Typography>
