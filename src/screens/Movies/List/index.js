@@ -10,8 +10,8 @@ import actionsFilms from "~/actions/movies";
 import Spinner from "~/components/Spinner";
 import { useStyles } from "./styles";
 
-const GET_MOVIE_BY_GENRE = gql`
-  query getByGenre($genre: String!, $page: Int!) {
+const GET_MOVIES_BY_GENRE = gql`
+  query moviesByGenre($genre: String!, $page: Int!) {
     allMovies(withGenres: $genre, page: $page) {
       results {
         id
@@ -25,6 +25,7 @@ const GET_MOVIE_BY_GENRE = gql`
 `;
 
 const List = props => {
+  console.log(props.location);
   const { type } = props.location.state;
 
   const [pageMovieByGenre, setPageMovieByGenre] = useState(1);
@@ -35,8 +36,8 @@ const List = props => {
 
   const movies = useSelector(state => state.reducerMovies.collectionMovies);
 
-  const [getMovieByGenre, { data, loading, error }] = useLazyQuery(
-    GET_MOVIE_BY_GENRE,
+  const [getMoviesByGenre, { data, loading, error }] = useLazyQuery(
+    GET_MOVIES_BY_GENRE,
     {
       onCompleted: () => {
         populateMovies();
@@ -46,18 +47,32 @@ const List = props => {
   );
 
   useEffect(() => {
-    console.log(movies?.idGenre);
-    setPageMovieByGenre(1);
-    getMovies(movies?.idGenre, 1);
+    console.log("type", type);
+    if (type === "moviesByGenries") {
+      setPageMovieByGenre(1);
+      getMovies(movies?.idGenre, 1);
+    } else if (type === "moviesByFavorites") {
+      moviesByFavorites();
+    }
   }, [movies?.movieTitle]);
 
   const getMovies = async (genre = 16, page) => {
-    await getMovieByGenre({
+    await getMoviesByGenre({
       variables: {
         genre: `${genre}`,
         page: page || pageMovieByGenre
       }
     });
+  };
+
+  const moviesByFavorites = async () => {
+    const favoriteMovies = await getToFavorite();
+
+    dispatch(
+      actionsFilms.collectionMovies({
+        collectionMovies: favoriteMovies
+      })
+    );
   };
 
   const populateMovies = () => {
@@ -75,22 +90,25 @@ const List = props => {
     );
   };
 
+  const getToFavorite = () => {
+    const stored = localStorage["favorite_films"] || [];
+
+    if (stored.length) return JSON.parse(stored);
+    else return stored;
+  };
+
   useEffect(() => {
     var options = {
       root: null,
       rootMargin: "20px",
       threshold: 1.0
     };
-    // initialize IntersectionObserver
-    // and attaching to Load More div
     const observer = new IntersectionObserver(handleObserver, options);
     if (loader.current) {
       observer.observe(loader.current);
     }
   }, [movies?.collectionMovies]);
 
-  // here we handle what happens when user scrolls to Load More div
-  // in this case we just update page variable
   const handleObserver = entities => {
     const target = entities[0];
 

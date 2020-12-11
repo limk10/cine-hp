@@ -98,7 +98,7 @@ const Details = props => {
   const saveToFavorite = async () => {
     let stored = await getToFavorite();
 
-    if (stored.includes(movieByID?.id)) {
+    if (stored.map(({ id }) => id).includes(movieByID?.id)) {
       toast.info(
         `Opss... Esse filme já foi adicionado a sua lista de favoritos!`,
         {
@@ -116,12 +116,32 @@ const Details = props => {
       return;
     }
 
-    stored.push(movieByID?.id);
+    stored.push(movieByID);
 
     localStorage["favorite_films"] = JSON.stringify(stored);
 
     toast.success(
       `Sucesso... O filme ${movieByID?.originalTitle} foi adicionado aos seus favoritos!`,
+      {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        pauseOnFocusLoss: false
+      }
+    );
+  };
+
+  const removeToFavorite = async () => {
+    let stored = await getToFavorite();
+    stored = stored.filter(({ id }) => movieByID?.id !== id);
+    localStorage["favorite_films"] = JSON.stringify(stored);
+
+    return toast.success(
+      `Sucesso... O filme ${movieByID?.originalTitle} foi removido dos seus favoritos!`,
       {
         position: "top-right",
         autoClose: 5000,
@@ -144,12 +164,28 @@ const Details = props => {
 
   const iconHeart = () => {
     let stored = getToFavorite();
-    const isIncluded = stored.includes(movieByID?.id);
+    const isIncluded = stored.map(({ id }) => id).includes(movieByID?.id);
 
     if (!isIncluded) {
-      return <FavoriteBorderOutlinedIcon fontSize="large" />;
+      return (
+        <IconButton
+          onClick={() => saveToFavorite()}
+          style={{ color: "#f0f0f0" }}
+          aria-label="add film to favorite"
+        >
+          <FavoriteBorderOutlinedIcon fontSize="large" />
+        </IconButton>
+      );
     } else {
-      return <FavoriteSharpIcon fontSize="large" />;
+      return (
+        <IconButton
+          onClick={() => removeToFavorite()}
+          style={{ color: "#f0f0f0" }}
+          aria-label="remove film to favorite"
+        >
+          <FavoriteSharpIcon fontSize="large" />
+        </IconButton>
+      );
     }
   };
 
@@ -203,13 +239,12 @@ const Details = props => {
                 >
                   <MovieCreationOutlinedIcon fontSize="large" />
                 </IconButton>
+                {iconHeart()}
                 <IconButton
                   onClick={() => saveToFavorite()}
                   style={{ color: "#f0f0f0" }}
                   aria-label="add film to favorite"
-                >
-                  {iconHeart()}
-                </IconButton>
+                ></IconButton>
               </Box>
             </Container>
           </div>

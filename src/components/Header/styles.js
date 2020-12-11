@@ -1,6 +1,12 @@
 import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginRight: theme.spacing(2)
+  },
   title: {
     cursor: "pointer",
     fontWeight: "bold",
@@ -11,7 +17,8 @@ const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     paddingLeft: 0,
-    paddingRight: 0
+    paddingRight: 0,
+    flexGrow: 1
   },
   appBar: {
     backgroundColor: "rgba(20, 20, 21, 0.9)",

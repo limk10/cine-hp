@@ -7,9 +7,11 @@ import {
   Toolbar,
   Container,
   Box,
+  IconButton,
   Button
 } from "@material-ui/core";
 import ExpandMoreRoundedIcon from "@material-ui/icons/ExpandMoreRounded";
+import FavoriteBorderOutlinedIcon from "@material-ui/icons/FavoriteBorderOutlined";
 
 import { useStyles } from "./styles";
 
@@ -56,9 +58,23 @@ const Header = () => {
     );
 
     history.push("/filme", {
-      state: {
-        type: "listByGenries"
-      }
+      type: "moviesByGenries"
+    });
+  };
+
+  const handleFavoriteMovies = async e => {
+    e.preventDefault();
+
+    dispatch(
+      actionsFilms.collectionMovies({
+        collectionMovies: [],
+        idGenre: "",
+        movieTitle: "Favoritos"
+      })
+    );
+
+    history.push("/filme", {
+      type: "moviesByFavorites"
     });
   };
 
@@ -66,43 +82,53 @@ const Header = () => {
     <>
       <AppBar className={classes.appBar} position="static">
         <Container maxWidth="lg">
-          <Toolbar
+          <div
             classes={{
               root: classes.toolbar
             }}
           >
-            <Typography
-              onClick={() => history.push("/")}
-              variant="h6"
-              className={classes.title}
-            >
-              Cine<span className={classes.secondTitle}>HP</span>
-            </Typography>
-            <Box>
-              <Button
+            <Toolbar position="static">
+              <Typography
                 onClick={() => history.push("/")}
-                className={classes.menu}
+                variant="h6"
+                className={classes.title}
               >
-                Início
-              </Button>
-              <div className={classes.dropdown}>
-                <Button className={`${classes.menu} ${classes.dropbtn}`}>
-                  Gêneros <ExpandMoreRoundedIcon style={{ color: "#f0f0f0" }} />
+                Cine<span className={classes.secondTitle}>HP</span>
+              </Typography>
+              <Box className={classes.root}>
+                <Button
+                  onClick={() => history.push("/")}
+                  className={classes.menu}
+                >
+                  Início
                 </Button>
-                <div className={classes.dropdownContent}>
-                  {genres?.map(({ id, name }, key) => (
-                    <a
-                      onClick={e => handleMovieByGenre(e, id, name)}
-                      key={key}
-                      href="#"
-                    >
-                      {name}
-                    </a>
-                  ))}
+                <div className={classes.dropdown}>
+                  <Button className={`${classes.menu} ${classes.dropbtn}`}>
+                    Gêneros{" "}
+                    <ExpandMoreRoundedIcon style={{ color: "#f0f0f0" }} />
+                  </Button>
+                  <div className={classes.dropdownContent}>
+                    {genres?.map(({ id, name }, key) => (
+                      <a
+                        onClick={e => handleMovieByGenre(e, id, name)}
+                        key={key}
+                        href="#"
+                      >
+                        {name}
+                      </a>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </Box>
-          </Toolbar>
+              </Box>
+              <Button
+                onClick={e => handleFavoriteMovies(e)}
+                startIcon={<FavoriteBorderOutlinedIcon />}
+                color="inherit"
+              >
+                Favoritos
+              </Button>
+            </Toolbar>
+          </div>
         </Container>
       </AppBar>
     </>
