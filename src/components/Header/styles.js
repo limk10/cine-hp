@@ -16,9 +16,8 @@ const useStyles = makeStyles(theme => ({
     color: "rgb(255, 20, 45)"
   },
   toolbar: {
-    paddingLeft: 0,
-    paddingRight: 0,
-    flexGrow: 1
+    flexGrow: 1,
+    padding: 0
   },
   appBar: {
     backgroundColor: "rgba(20, 20, 21, 0.9)",
@@ -27,7 +26,6 @@ const useStyles = makeStyles(theme => ({
   menu: {
     color: "#f0f0f0"
   },
-
   dropdown: {
     position: "relative",
     display: "inline-block",
@@ -35,7 +33,6 @@ const useStyles = makeStyles(theme => ({
       display: "block"
     }
   },
-
   dropdownContent: {
     display: "none",
     position: "absolute",

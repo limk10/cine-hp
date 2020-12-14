@@ -64,30 +64,37 @@ const Header = () => {
 
   const handleFavoriteMovies = async e => {
     e.preventDefault();
+    const favoriteMovies = await getToFavorite();
 
     dispatch(
       actionsFilms.collectionMovies({
-        collectionMovies: [],
+        collectionMovies: favoriteMovies,
         idGenre: "",
         movieTitle: "Favoritos"
       })
     );
 
-    history.push("/filme", {
-      type: "moviesByFavorites"
-    });
+    history.push("/filme/favoritos");
+  };
+
+  const getToFavorite = () => {
+    const stored = localStorage["favorite_films"] || [];
+
+    if (stored.length) return JSON.parse(stored);
+    else return stored;
   };
 
   return (
     <>
-      <AppBar className={classes.appBar} position="static">
+      <AppBar
+        classes={{
+          root: classes.appBar
+        }}
+        position="static"
+      >
         <Container maxWidth="lg">
-          <div
-            classes={{
-              root: classes.toolbar
-            }}
-          >
-            <Toolbar position="static">
+          <div className={classes.toolbar}>
+            <Toolbar style={{ padding: 0 }}>
               <Typography
                 onClick={() => history.push("/")}
                 variant="h6"
