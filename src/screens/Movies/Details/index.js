@@ -308,7 +308,7 @@ const Details = props => {
                           movieByID?.genres.map(item => `${item?.name}, `)}
                       </Typography>
                     </Grid>
-                    <Grid xs={6} md={2}>
+                    <Grid item xs={6} md={2}>
                       <Typography
                         className={classes.titleResume}
                         variant="subtitle2"

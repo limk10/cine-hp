@@ -25,9 +25,6 @@ const GET_MOVIES_BY_GENRE = gql`
 `;
 
 const List = props => {
-  console.log(props.location);
-  const { type } = props.location.state;
-
   const [pageMovieByGenre, setPageMovieByGenre] = useState(1);
 
   const loader = useRef(null);
@@ -47,13 +44,8 @@ const List = props => {
   );
 
   useEffect(() => {
-    console.log("type", type);
-    if (type === "moviesByGenries") {
-      setPageMovieByGenre(1);
-      getMovies(movies?.idGenre, 1);
-    } else if (type === "moviesByFavorites") {
-      moviesByFavorites();
-    }
+    setPageMovieByGenre(1);
+    getMovies(movies?.idGenre, 1);
   }, [movies?.movieTitle]);
 
   const getMovies = async (genre = 16, page) => {
@@ -63,16 +55,6 @@ const List = props => {
         page: page || pageMovieByGenre
       }
     });
-  };
-
-  const moviesByFavorites = async () => {
-    const favoriteMovies = await getToFavorite();
-
-    dispatch(
-      actionsFilms.collectionMovies({
-        collectionMovies: favoriteMovies
-      })
-    );
   };
 
   const populateMovies = () => {
@@ -88,13 +70,6 @@ const List = props => {
         idGenre: movies?.idGenre
       })
     );
-  };
-
-  const getToFavorite = () => {
-    const stored = localStorage["favorite_films"] || [];
-
-    if (stored.length) return JSON.parse(stored);
-    else return stored;
   };
 
   useEffect(() => {
@@ -126,7 +101,12 @@ const List = props => {
         <ArrowForwardIosOutlinedIcon className={classes.iconArrow} />
       </Box>
       <Grid container>
-        {!!!movies?.collectionMovies?.length && <Spinner />}
+        {loading && <Spinner />}
+        {!loading && !movies?.collectionMovies?.length && (
+          <Typography style={{ textAlign: "center" }} variant="h6" gutterBottom>
+            Nenhum filme encontrado.
+          </Typography>
+        )}
         {!!movies?.collectionMovies?.length && (
           <Grid
             id="content-list-movies"
